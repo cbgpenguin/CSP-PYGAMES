@@ -25,7 +25,7 @@ def main():
 
 
     # make Player: opject of playersprite
-    playerSpriteSheet = loadAndScaleImage("pixilart-sprite.png")
+    playerSpriteSheet = loadAndScaleImage("resorces/playerFiles/pixilart-sprite.png")
     playerSpriteFrames = load_sprite_sheet(playerSpriteSheet, 121 * scale, 200 * scale, 1, 9, True)
     playerSprite = animatedSprite.AnimatedSprite(screen, 0, 500, playerSpriteFrames, 6)
 
