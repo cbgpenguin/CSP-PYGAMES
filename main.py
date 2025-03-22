@@ -18,41 +18,50 @@ def main():
 
     # Display some text
     font = pygame.font.Font(None, 36)
-    text = font.render("Objective: Find evidince", 1, (10, 255, 10))
-    textpos = text.get_rect()
-    textpos.centerx = background.get_rect().centerx
-    background.blit(text, textpos)
+    text = font.render("Objective: Find evidence", 1, (10, 255, 10))
+    textPos = text.get_rect()
+    textPos.centerx = background.get_rect().centerx
+    background.blit(text, textPos)
 
 
-    # make Player: opject of playersprite
-    playerSpriteSheet = loadAndScaleImage("resorces/playerFiles/pixilart-sprite.png")
+    # make Player: object of playerSprite
+    playerSpriteSheet = loadAndScaleImage("resources/playerFiles/playerStandSpriteSheet.png")
     playerSpriteFrames = load_sprite_sheet(playerSpriteSheet, 121 * scale, 200 * scale, 1, 9, True)
     playerSprite = animatedSprite.AnimatedSprite(screen, 0, 500, playerSpriteFrames, 6)
+    playerWalkSpriteSheet = loadAndScaleImage("resources/playerFiles/detective-walk-animation-place-holder.png")
+    playerWalkSpriteFrames = load_sprite_sheet(playerWalkSpriteSheet, 121 * scale, 200 * scale, 1, 1, False)
+
+
+    
 
     # Event loop
     while True:
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         delta = clock.tick() / 1000.0
-        print("event update:", delta)
+        # print("event update:", delta)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
+                    print("left pressed")
                     playerSprite.moveLeft()
-                    # playerSprite.changeAnimation(load_sprite_sheet("walkingAnimation", 121, 200, 2, 10, False))
+                    playerSprite.changeAnimation(playerWalkSpriteFrames)
                 elif event.key == pygame.K_RIGHT:
+                    print("right pressed")
                     playerSprite.moveRight()
-                    # playerSprite.changeAnimation(load_sprite_sheet("walkingAnimation", 121, 200, 2, 10, False))
+                    playerSprite.changeAnimation(playerWalkSpriteFrames)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    playerSprite.movepos = [0,0]
+                    playerSprite.movePos = [0,0]
                     playerSprite.state = "still"
-                    playerSprite.defaltAnimation()
+                    playerSprite.defaultAnimation()
             
         screen.blit(background, (0, 0))
 
         # Update the animation
         playerSprite.update()
+        # print("called update")
         
         # Draw the animation
         playerSprite.draw()
@@ -61,34 +70,33 @@ def main():
 
 
 def load_sprite_sheet(spriteSheet, frameWidth, frameHeight, rows, columns, bounce):
-
     frames = []
     for row in range(rows):
         for column in range(columns):
-            print("column", column)
+            # print("column", column)
             rect = pygame.Rect(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
-            print("top left rectangle", rect.topleft)
+            # print("top left rectangle", rect.topleft)
             frame = spriteSheet.subsurface(rect)
             frames.append(frame)
-            print("length of frames", len(frames))
+            # print("length of frames", len(frames))
 
     if bounce:
         for bounceRow in range(rows):
             realRow = (rows-1 - bounceRow)
-            print("bounce row:", bounceRow)
-            print("real row:", realRow)
+            # print("bounce row:", bounceRow)
+            # print("real row:", realRow)
             for bounceColumn in range(columns):
                 realColumn = ((columns-1) - bounceColumn)
-                print("bounce column is:", bounceColumn)
-                print("real column:", realColumn)
+                # print("bounce column is:", bounceColumn)
+                # print("real column:", realColumn)
                 if bounceColumn != 0:
                     rect = pygame.Rect(realColumn * frameWidth, realRow * frameHeight, frameWidth, frameHeight)
-                    print("top left rectangle:", rect.topleft)
+                    # print("top left rectangle:", rect.topleft)
                     frame = spriteSheet.subsurface(rect)
                     frames.append(frame)
-                    print("length of frames:", len(frames))
-                else:
-                    print("skiping the doing last frame twice")
+                    # print("length of frames:", len(frames))
+                # else:
+                    # print("skipping the doing last frame twice")
             
     return frames
 
@@ -97,7 +105,7 @@ def loadAndScaleImage(originalImagePath):
     try:
         originalImage = pygame.image.load(originalImagePath)
     except:
-        print("faild to load resorce about to crash")
+        # print("failed to load resource about to crash")
         return -1 # ERROR
     
     newWidth = originalImage.get_width() * 2
