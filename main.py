@@ -4,7 +4,7 @@ import animatedSprite
 
 def main():
     # clock = pygame.time.Clock()
-    scale = 2
+    imageScale = 2 # Scale the images up to this
     # Initialise screen
     pygame.init()
     screen = pygame.display.set_mode((1500, 1000))
@@ -13,7 +13,7 @@ def main():
     # Fill background
     # background = pygame.Surface(screen.get_size())
     # background = background.convert()
-    background = loadAndScaleImage("resources/backdrop1.png")
+    background = loadAndScaleImage("resources/backdrop1.png", imageScale)
 
     # Display text
     font = pygame.font.Font(None, 36)
@@ -22,12 +22,14 @@ def main():
     textPos.centerx = background.get_rect().centerx
     background.blit(text, textPos)
 
-    # make Player: object of playerSprite
-    playerSpriteSheet = loadAndScaleImage("resources/playerFiles/playerStandSpriteSheet.png")
-    playerSpriteFrames = load_sprite_sheet(playerSpriteSheet, 121 * scale, 200 * scale, 1, 9, True)
+    # make Player: object of playerSprite + animations
+    playerSpriteSheet = loadAndScaleImage("resources/playerFiles/playerStandSpriteSheet.png", imageScale)
+    playerSpriteFrames = loadSpriteSheet(playerSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 9, True)
+
     playerSprite = animatedSprite.AnimatedSprite(screen, 0, 500, playerSpriteFrames, 6)
-    playerWalkSpriteSheet = loadAndScaleImage("resources/playerFiles/detective-walk-animation-place-holder.png")
-    playerWalkSpriteFrames = load_sprite_sheet(playerWalkSpriteSheet, 121 * scale, 200 * scale, 1, 1, False)
+
+    playerWalkSpriteSheet = loadAndScaleImage("resources/playerFiles/detective-walk-animation-place-holder.png", imageScale)
+    playerWalkSpriteFrames = loadSpriteSheet(playerWalkSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 1, False)
 
     # Event loop
     while True:
@@ -40,17 +42,20 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     print("left pressed")
-                    playerSprite.moveLeft()
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
+                    playerSprite.image = pygame.transform.flip(playerSprite.image, True, False)
+                    playerSprite.update()
+                    playerSprite.moveLeft()
                 elif event.key == pygame.K_RIGHT:
                     print("right pressed")
-                    playerSprite.moveRight()
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
+                    playerSprite.update()
+                    playerSprite.moveRight()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    playerSprite.defaultAnimation()
                     playerSprite.movePos = [0, 0]
                     playerSprite.state = "still"
-                    playerSprite.defaultAnimation()
             
         screen.blit(background, (0, 0))
 
@@ -59,12 +64,10 @@ def main():
         # print("called update")
         
         # Draw the animation
-        playerSprite.draw()
 
         pygame.display.flip()
 
-
-def load_sprite_sheet(spriteSheet, frameWidth, frameHeight, rows, columns, bounce):
+def loadSpriteSheet(spriteSheet, frameWidth, frameHeight, rows, columns, bounce):
     frames = []
     for row in range(rows):
         for column in range(columns):
@@ -96,20 +99,18 @@ def load_sprite_sheet(spriteSheet, frameWidth, frameHeight, rows, columns, bounc
     return frames
 
 
-def loadAndScaleImage(originalImagePath):
-    scaledImage = -1
+def loadAndScaleImage(originalImagePath, scale):
     try:
         originalImage = pygame.image.load(originalImagePath)
     except:
-        # print("failed to load resource about to crash")
+        print("failed to load resource about to crash")
         return -1  # ERROR
     
-    newWidth = originalImage.get_width() * 2
-    newHeight = originalImage.get_height() * 2
+    newWidth = originalImage.get_width() * scale
+    newHeight = originalImage.get_height() * scale
     scaledImage = pygame.transform.scale(originalImage, (newWidth, newHeight))
 
     return scaledImage
 
 
 main()
-
