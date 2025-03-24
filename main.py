@@ -43,8 +43,8 @@ def main():
                 if event.key == pygame.K_LEFT:
                     print("left pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
+                    playerSprite.newFrame()
                     playerSprite.image = pygame.transform.flip(playerSprite.image, True, False)
-                    playerSprite.update()
                     playerSprite.moveLeft()
                 elif event.key == pygame.K_RIGHT:
                     print("right pressed")
