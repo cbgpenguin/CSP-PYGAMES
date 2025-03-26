@@ -36,8 +36,8 @@ def game():
 
     pointOfInterestImage = loadAndScaleImage("resources/backdrop1.png", imageScale)
 
-    book = pointOfInterest(screen, 20, 50, pointOfInterestImage, "book")
-
+    book = pointOfInterest(screen, 50, 50, pointOfInterestImage, "book")
+    pointsOfInterest = [book]
     # Event loop
     while True:
         counter += 1
@@ -66,7 +66,12 @@ def game():
                     playerSprite.defaultAnimation()
                     playerSprite.movePos = [0, 0]
                     playerSprite.state = "still"
-        book.update()
+
+        for point in pointsOfInterest:
+            if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
+                print("player is close to", point.name)
+                point.isPlayerInRange = True
+            point.update()
         screen.blit(background, (0, 0))
 
         # Update the animation

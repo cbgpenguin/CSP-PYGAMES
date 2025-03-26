@@ -11,7 +11,4 @@ class pointOfInterest(pygame.sprite.Sprite):
             self.name = name
 
         def update(self):
-              from main import playerSprite
-              if abs(playerSprite.rect[0] - self.rect[0]) < self.visibleRange:
-                    print("player is close to", self.name)
-                    self.isPlayerInRange = True
+              pass
