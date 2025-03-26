@@ -10,25 +10,31 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft=(x, y))
             self.defaultFrames = defaultFrames
             self.frames = defaultFrames
-            self.frame_index = 0
+            self.frameIndex = 0
             self.frame_rate = frameRate
             self.frame_counter = 0
             self.movePos = [0, 0]
             self.area = screen.get_rect()
-            self.speed = 6
+            self.speed = 20 # in pixels per second
             self.state = "still"
             self.clock = pygame.time.Clock()
             self.lastFrameUpdate = 0
-            self.counter = 0
+            self.delta = 0
         
         #Changes and draws the image
         def update(self):
-            delta = self.clock.tick() / 1000.0
-            self.lastFrameUpdate = self.lastFrameUpdate + delta
+            self.delta = (self.clock.tick() / 1000.0)
+            print("updating... here's delta:", self.delta)
+            self.lastFrameUpdate = self.lastFrameUpdate + self.delta
             # print(self, "frame update:", self.lastUpdate)
             if self.lastFrameUpdate >= (1.0 / self.frame_rate):
                 # For example have a frame rate of 6 fps: (1/6 = 0.16666) so if its been longer go to next frame
                 self.newFrame()
+
+            if self.state == "moveLeft":
+                self.moveLeft()
+            if self.state == "moveRight":
+                self.moveRight()
 
             newPos = self.rect.move(self.movePos)
             if self.area.contains(newPos): 
@@ -44,13 +50,12 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
         def newFrame(self):
             self.lastFrameUpdate = 0
-            self.frame_index = (self.frame_index + 1) % len(self.frames)
-            self.image = self.frames[self.frame_index]
+            self.frameIndex = (self.frameIndex + 1) % len(self.frames)
+            self.image = self.frames[self.frameIndex]
 
             if self.state == "moveLeft":
                 self.image = pygame.transform.flip(self.image, True, False)
-                print("flipping")
-                self.isFlipped = True
+                # print("flipping")
 
         def changeAnimation(self, newFrames):
             self.frames = newFrames
@@ -59,9 +64,13 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.frames = self.defaultFrames
 
         def moveLeft(self):
-            self.movePos[0] = self.movePos[0] - (self.speed)
-            self.state = "moveLeft"
+            # print("move left called")
+            self.movePos[0] = self.movePos[0] - (self.speed * self.delta)
+            # print("going left. Delta:", self.delta)
+            # print("pixels to the left:", self.speed * self.delta)
 
         def moveRight(self):
-            self.movePos[0] = self.movePos[0] + (self.speed)
-            self.state = "moveRight"
+            # print("move right called")
+            self.movePos[0] = self.movePos[0] + (self.speed * self.delta)
+            # print("going right. Delta:", self.delta)
+            # print("pixels to the right:", self.delta * self.speed)

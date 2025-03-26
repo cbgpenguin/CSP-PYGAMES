@@ -1,13 +1,16 @@
 import pygame
 import animatedSprite
+from pointOfInterest import pointOfInterest
 
-
-def main():
+playerSprite = None
+def game():
+    counter = 0
+    global playerSprite
     # clock = pygame.time.Clock()
     imageScale = 2 # Scale the images up to this
     # Initialise screen
     pygame.init()
-    screen = pygame.display.set_mode((1500, 1000))
+    screen = pygame.display.set_mode((1500, 700))
     pygame.display.set_caption('Detective Game')
 
     # Fill background
@@ -26,14 +29,19 @@ def main():
     playerSpriteSheet = loadAndScaleImage("resources/playerFiles/playerStandSpriteSheet.png", imageScale)
     playerSpriteFrames = loadSpriteSheet(playerSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 9, True)
 
-    playerSprite = animatedSprite.AnimatedSprite(screen, 0, 500, playerSpriteFrames, 6)
+    playerSprite = animatedSprite.AnimatedSprite(screen, 0, 300, playerSpriteFrames, 6)
 
     playerWalkSpriteSheet = loadAndScaleImage("resources/playerFiles/detective-walk-animation-place-holder.png", imageScale)
-    playerWalkSpriteFrames = loadSpriteSheet(playerWalkSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 1, False)
+    playerWalkSpriteFrames = loadSpriteSheet(playerWalkSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 1, False) #todo: change numbers when there are real frames
+
+    pointOfInterestImage = loadAndScaleImage("resources/backdrop1.png", imageScale)
+
+    book = pointOfInterest(screen, 20, 50, pointOfInterestImage, "book")
 
     # Event loop
     while True:
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        counter += 1
+        print("~~~~~~ Event Loop Start ~~~~~~", counter)
         # delta = clock.tick() / 1000.0
         # print("event update:", delta)
         for event in pygame.event.get():
@@ -41,30 +49,30 @@ def main():
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    print("left pressed")
+                    # print("left pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
                     playerSprite.newFrame()
                     playerSprite.image = pygame.transform.flip(playerSprite.image, True, False)
+                    playerSprite.state = "moveLeft"
                     playerSprite.moveLeft()
                 elif event.key == pygame.K_RIGHT:
-                    print("right pressed")
+                    # print("right pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
                     playerSprite.update()
+                    playerSprite.state = "moveRight"
                     playerSprite.moveRight()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     playerSprite.defaultAnimation()
                     playerSprite.movePos = [0, 0]
                     playerSprite.state = "still"
-            
+        book.update()
         screen.blit(background, (0, 0))
 
         # Update the animation
         playerSprite.update()
         # print("called update")
         
-        # Draw the animation
-
         pygame.display.flip()
 
 def loadSpriteSheet(spriteSheet, frameWidth, frameHeight, rows, columns, bounce):
@@ -113,4 +121,4 @@ def loadAndScaleImage(originalImagePath, scale):
     return scaledImage
 
 
-main()
+game()
