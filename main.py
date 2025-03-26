@@ -54,23 +54,27 @@ def game():
                     playerSprite.newFrame()
                     playerSprite.image = pygame.transform.flip(playerSprite.image, True, False)
                     playerSprite.state = "moveLeft"
-                    playerSprite.moveLeft()
                 elif event.key == pygame.K_RIGHT:
                     # print("right pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
                     playerSprite.update()
                     playerSprite.state = "moveRight"
-                    playerSprite.moveRight()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     playerSprite.defaultAnimation()
-                    playerSprite.movePos = [0, 0]
+                    playerSprite.moveDistance = [0, 0]
                     playerSprite.state = "still"
 
         for point in pointsOfInterest:
             if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
                 print("player is close to", point.name)
                 point.isPlayerInRange = True
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_e:
+                        # print("e pressed while near", point.name)
+                        point.open()
+            else:
+                point.isPlayerInRange = False
             point.update()
         screen.blit(background, (0, 0))
 

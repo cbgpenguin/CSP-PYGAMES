@@ -13,9 +13,9 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.frameIndex = 0
             self.frame_rate = frameRate
             self.frame_counter = 0
-            self.movePos = [0, 0]
+            self.moveDistance = [0, 0]
             self.area = screen.get_rect()
-            self.speed = 20 # in pixels per second
+            self.speed = 400 # in pixels per second NOPE 
             self.state = "still"
             self.clock = pygame.time.Clock()
             self.lastFrameUpdate = 0
@@ -24,7 +24,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         #Changes and draws the image
         def update(self):
             self.delta = (self.clock.tick() / 1000.0)
-            print("updating... here's delta:", self.delta)
+            # print("updating... here's delta:", self.delta)
             self.lastFrameUpdate = self.lastFrameUpdate + self.delta
             # print(self, "frame update:", self.lastUpdate)
             if self.lastFrameUpdate >= (1.0 / self.frame_rate):
@@ -32,15 +32,25 @@ class AnimatedSprite(pygame.sprite.Sprite):
                 self.newFrame()
 
             if self.state == "moveLeft":
-                self.moveLeft()
-            if self.state == "moveRight":
-                self.moveRight()
+                # print("move left called")
+                self.moveDistance[0] = self.moveDistance[0] - (self.speed * self.delta) - self.smallMoveDistance
+                # print("going left. Delta:", self.delta)
+                print("pixels to the left:", self.speed * self.delta)
 
-            newPos = self.rect.move(self.movePos)
+            if self.state == "moveRight":
+                # print("move right called")
+                self.moveDistance[0] = self.moveDistance[0] + (self.speed * self.delta) - self.smallMoveDistance
+                # print("going right. Delta:", self.delta)
+                # print("pixels to the right:", self.delta * self.speed)
+
+            newPos = self.rect.move(self.moveDistance)
+            # print(self.moveDistance)
             if self.area.contains(newPos): 
                 self.rect = newPos
                 pygame.event.pump()
-            
+            self.smallMoveDistance = self.moveDistance[0] % 1.1
+            # print("Small move distance", self.smallMoveDistance)
+            self.moveDistance[0] = 0
             # print("state:", self.state)
 
             #actually draws the image onto the position
@@ -62,15 +72,3 @@ class AnimatedSprite(pygame.sprite.Sprite):
         
         def defaultAnimation(self):
             self.frames = self.defaultFrames
-
-        def moveLeft(self):
-            # print("move left called")
-            self.movePos[0] = self.movePos[0] - (self.speed * self.delta)
-            # print("going left. Delta:", self.delta)
-            # print("pixels to the left:", self.speed * self.delta)
-
-        def moveRight(self):
-            # print("move right called")
-            self.movePos[0] = self.movePos[0] + (self.speed * self.delta)
-            # print("going right. Delta:", self.delta)
-            # print("pixels to the right:", self.delta * self.speed)

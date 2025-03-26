@@ -7,8 +7,11 @@ class pointOfInterest(pygame.sprite.Sprite):
             self.screen = screen
             self.image = image
             self.isPlayerInRange = False
-            self.visibleRange = 30 #pixels
+            self.visibleRange = 50 #pixels
             self.name = name
 
         def update(self):
+              pass
+        
+        def open(self):
               pass
