@@ -1,5 +1,5 @@
 import pygame
-import animatedSprite
+import animatedSprite as animatedSprite
 from pointOfInterest import pointOfInterest
 
 playerSprite = None
@@ -37,7 +37,9 @@ def game():
     pointOfInterestImage = loadAndScaleImage("resources/backdrop1.png", imageScale)
 
     book = pointOfInterest(screen, 50, 50, pointOfInterestImage, "book")
+
     pointsOfInterest = [book]
+    menu = None
     # Event loop
     while True:
         counter += 1
@@ -48,19 +50,25 @@ def game():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     # print("left pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
                     playerSprite.newFrame()
                     playerSprite.image = pygame.transform.flip(playerSprite.image, True, False)
                     playerSprite.state = "moveLeft"
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     # print("right pressed")
                     playerSprite.changeAnimation(playerWalkSpriteFrames)
                     playerSprite.update()
                     playerSprite.state = "moveRight"
+                elif event.key == pygame.K_e:
+                    for point in pointsOfInterest:
+                        if point.isPlayerInRange:
+                            point.open()
+                                 
+
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_a or event.key == pygame.K_d or pygame.K_LEFT or pygame.K_RIGHT:
                     playerSprite.defaultAnimation()
                     playerSprite.moveDistance = [0, 0]
                     playerSprite.state = "still"
@@ -69,10 +77,7 @@ def game():
             if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
                 print("player is close to", point.name)
                 point.isPlayerInRange = True
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_e:
-                        # print("e pressed while near", point.name)
-                        point.open()
+
             else:
                 point.isPlayerInRange = False
             point.update()

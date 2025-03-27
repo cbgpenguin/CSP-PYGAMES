@@ -48,7 +48,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
             if self.area.contains(newPos): 
                 self.rect = newPos
                 pygame.event.pump()
-            self.smallMoveDistance = self.moveDistance[0] % 1.1
+            self.smallMoveDistance = self.moveDistance[0] % 1.000001
             # print("Small move distance", self.smallMoveDistance)
             self.moveDistance[0] = 0
             # print("state:", self.state)
