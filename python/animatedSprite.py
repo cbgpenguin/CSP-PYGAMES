@@ -35,7 +35,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
                 # print("move left called")
                 self.moveDistance[0] = self.moveDistance[0] - (self.speed * self.delta) - self.smallMoveDistance
                 # print("going left. Delta:", self.delta)
-                print("pixels to the left:", self.speed * self.delta)
+                # print("pixels to the left:", self.speed * self.delta)
 
             if self.state == "moveRight":
                 # print("move right called")
@@ -48,7 +48,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
             if self.area.contains(newPos): 
                 self.rect = newPos
                 pygame.event.pump()
-            self.smallMoveDistance = self.moveDistance[0] % 1.000001
+            self.smallMoveDistance = self.moveDistance[0] % 1
             # print("Small move distance", self.smallMoveDistance)
             self.moveDistance[0] = 0
             # print("state:", self.state)

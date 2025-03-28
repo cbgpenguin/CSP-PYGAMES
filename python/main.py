@@ -1,5 +1,5 @@
 import pygame
-import animatedSprite as animatedSprite
+import animatedSprite
 from pointOfInterest import pointOfInterest
 
 playerSprite = None
@@ -34,14 +34,16 @@ def game():
     playerWalkSpriteSheet = loadAndScaleImage("resources/playerFiles/detective-walk-animation-place-holder.png", imageScale)
     playerWalkSpriteFrames = loadSpriteSheet(playerWalkSpriteSheet, 121 * imageScale, 200 * imageScale, 1, 1, False) #todo: change numbers when there are real frames
 
-    pointOfInterestImage = loadAndScaleImage("resources/backdrop1.png", imageScale)
+    pointOfInterestImage = loadAndScaleImage("resources/pointOfInterest.png", imageScale)
 
-    book = pointOfInterest(screen, 50, 50, pointOfInterestImage, "book")
+    bookLines = ["Hmm, a book detailing", "knives... seems important", "the man was stabbed", "could this be evidence?", "I'm going to keep walking", "around to look for evidence"]
+    book = pointOfInterest(screen, 100, 300, pointOfInterestImage, "book", bookLines)
 
     pointsOfInterest = [book]
     menu = None
     # Event loop
     while True:
+        screen.blit(background, (0, 0))
         counter += 1
         print("~~~~~~ Event Loop Start ~~~~~~", counter)
         # delta = clock.tick() / 1000.0
@@ -77,11 +79,12 @@ def game():
             if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
                 print("player is close to", point.name)
                 point.isPlayerInRange = True
-
+                screen.blit(point.image, point.rect)
             else:
                 point.isPlayerInRange = False
+                point.close()
             point.update()
-        screen.blit(background, (0, 0))
+            
 
         # Update the animation
         playerSprite.update()
