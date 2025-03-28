@@ -15,7 +15,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
             self.frame_counter = 0
             self.moveDistance = [0, 0]
             self.area = screen.get_rect()
-            self.speed = 400 # in pixels per second NOPE 
+            self.speed = 500 # in pixels per second NOPE 
             self.state = "still"
             self.clock = pygame.time.Clock()
             self.lastFrameUpdate = 0

@@ -36,10 +36,17 @@ def game():
 
     pointOfInterestImage = loadAndScaleImage("resources/pointOfInterest.png", imageScale)
 
-    bookLines = ["Hmm, a book detailing", "knives... seems important", "the man was stabbed", "could this be evidence?", "I'm going to keep walking", "around to look for evidence"]
+    bookLines = ["Hmm, a book detailing", "knives... seems important.", "the man was stabbed", "could this be evidence?", "I'm going to keep walking", "around to look for evidence"]
     book = pointOfInterest(screen, 100, 300, pointOfInterestImage, "book", bookLines)
 
-    pointsOfInterest = [book]
+    boardLines = ["it seems they were", "doing their own kind", "of detective work", "what could this be about?", "bla bla bla bla", "bla bla bla bla"]
+    board = pointOfInterest(screen, 500, 200, pointOfInterestImage, "board", boardLines)
+
+    calenderLines = ["They had a day marked off on", "on their calender", "three days ago just a", "day before he was killed"]
+    calender = pointOfInterest(screen, 1200, 130, pointOfInterestImage, "calender", calenderLines)
+
+    pointsOfInterest = [book, board, calender]
+
     menu = None
     # Event loop
     while True:
@@ -75,6 +82,11 @@ def game():
                     playerSprite.moveDistance = [0, 0]
                     playerSprite.state = "still"
 
+        # Update the play animation and draw
+        playerSprite.update()
+        # print("called update")
+
+        # if point is in range then draw it. If not then close it. Super important the point is in the list
         for point in pointsOfInterest:
             if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
                 print("player is close to", point.name)
@@ -86,9 +98,6 @@ def game():
             point.update()
             
 
-        # Update the animation
-        playerSprite.update()
-        # print("called update")
         
         pygame.display.flip()
 
