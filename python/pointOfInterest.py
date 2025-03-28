@@ -15,9 +15,12 @@ class pointOfInterest(pygame.sprite.Sprite):
             self.menu = None
             
       def update(self):
+            if self.isPlayerInRange:
+                  self.screen.blit(self.image, pygame.Rect(self.rect.left + 60, self.rect.top, self.rect.right, self.rect.bottom))
             if self.isOpen:
                   self.menu.update()
-        
+
+      
       def open(self):
             print("opening")
             self.isOpen = True

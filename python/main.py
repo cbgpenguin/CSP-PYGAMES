@@ -20,7 +20,7 @@ def game():
 
     # Display text
     font = pygame.font.Font(None, 36)
-    text = font.render("Objective: Find evidence", 1, (10, 255, 10))
+    text = font.render("Objective: Find evidence", True, (20, 60, 60))
     textPos = text.get_rect()
     textPos.centerx = background.get_rect().centerx
     background.blit(text, textPos)
@@ -36,11 +36,11 @@ def game():
 
     pointOfInterestImage = loadAndScaleImage("resources/pointOfInterest.png", imageScale)
 
-    bookLines = ["Hmm, a book detailing", "knives... seems important.", "the man was stabbed", "could this be evidence?", "I'm going to keep walking", "around to look for evidence"]
-    book = pointOfInterest(screen, 100, 300, pointOfInterestImage, "book", bookLines)
+    bookLines = ["Hmm, a books detailing water", "quality. Doesn't seem", "important... The man was", "stabbed could this be", "evidence? I'm going to keep", "walking around to look", " for evidence"]
+    book = pointOfInterest(screen, 150, 300, pointOfInterestImage, "book", bookLines)
 
     boardLines = ["it seems they were", "doing their own kind", "of detective work", "what could this be about?", "bla bla bla bla", "bla bla bla bla"]
-    board = pointOfInterest(screen, 500, 200, pointOfInterestImage, "board", boardLines)
+    board = pointOfInterest(screen, 620, 170, pointOfInterestImage, "board", boardLines)
 
     calenderLines = ["They had a day marked off on", "on their calender", "three days ago just a", "day before he was killed"]
     calender = pointOfInterest(screen, 1200, 130, pointOfInterestImage, "calender", calenderLines)
@@ -74,7 +74,7 @@ def game():
                     for point in pointsOfInterest:
                         if point.isPlayerInRange:
                             point.open()
-                                 
+                            
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_a or event.key == pygame.K_d or pygame.K_LEFT or pygame.K_RIGHT:
@@ -86,16 +86,15 @@ def game():
         playerSprite.update()
         # print("called update")
 
-        # if point is in range then draw it. If not then close it. Super important the point is in the list
+        # if point is in range of the player then draw it. If not then close it. Super important the point is in the list
         for point in pointsOfInterest:
             if abs(playerSprite.rect[0] - point.rect[0]) < point.visibleRange:
                 print("player is close to", point.name)
                 point.isPlayerInRange = True
-                screen.blit(point.image, point.rect)
+                point.update()
             else:
                 point.isPlayerInRange = False
                 point.close()
-            point.update()
             
 
         
