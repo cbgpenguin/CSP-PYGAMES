@@ -2,10 +2,8 @@ import pygame
 import animatedSprite
 from pointOfInterest import pointOfInterest
 
-playerSprite = None
 def game():
     counter = 0
-    global playerSprite
     # clock = pygame.time.Clock()
     imageScale = 2 # Scale the images up to this
     # Initialise screen
@@ -36,7 +34,7 @@ def game():
 
     pointOfInterestImage = loadAndScaleImage("resources/pointOfInterest.png", imageScale)
 
-    bookLines = ["Hmm, a books detailing water", "quality. Doesn't seem", "important... The man was", "stabbed could this be", "evidence? I'm going to keep", "walking around to look", " for evidence"]
+    bookLines = ["Hmm, a books detailing water", "quality. Doesn't seem", "important... The man was", "stabbed could this be", "evidence? I'm going to keep", "walking around to look", "for evidence"]
     book = pointOfInterest(screen, 150, 300, pointOfInterestImage, "book", bookLines)
 
     boardLines = ["it seems they were", "doing their own kind", "of detective work", "what could this be about?", "bla bla bla bla", "bla bla bla bla"]

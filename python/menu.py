@@ -19,5 +19,5 @@ class menu(pygame.sprite.Sprite):
             for i in range(len(self.lines)):
                 wordPos = pygame.Rect(self.rect.left + 10, self.rect.top + 20 + (30 * i), self.rect.right - 20, self.rect.bottom - 30) 
                 self.screen.blit(font.render(self.lines[i], 1, self.textColor), wordPos)
-            self.screen.blit(font.render("Keep walking to find evidence", 1, self.textColor), pygame.Rect(self.rect.top + 80, self.rect.left + 20, self.rect.right - 20, self.rect.bottom - 30))
+            self.screen.blit(font.render("Keep walking to find evidence", 1, self.textColor), pygame.Rect(self.rect.left, self.rect.top + 640, self.rect.right, self.rect.bottom))
             # self.screen.blit(self.image, self.rect)
