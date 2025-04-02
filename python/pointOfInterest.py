@@ -1,7 +1,7 @@
 import pygame
 from menu import menu
 
-class pointOfInterest(pygame.sprite.Sprite):
+class PointOfInterest(pygame.sprite.Sprite):
       def __init__(self, screen, x, y, image, name, text):
             super().__init__()
             self.rect = image.get_rect(topleft=(x, y))

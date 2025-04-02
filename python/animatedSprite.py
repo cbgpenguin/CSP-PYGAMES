@@ -56,8 +56,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
             #actually draws the image onto the position
             self.screen.blit(self.image, self.rect)
 
-            
-
         def newFrame(self):
             self.lastFrameUpdate = 0
             self.frameIndex = (self.frameIndex + 1) % len(self.frames)

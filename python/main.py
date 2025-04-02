@@ -1,6 +1,6 @@
 import pygame
 import animatedSprite
-from pointOfInterest import pointOfInterest
+from pointOfInterest import PointOfInterest
 
 def game():
     counter = 0
@@ -35,13 +35,13 @@ def game():
     pointOfInterestImage = loadAndScaleImage("resources/pointOfInterest.png", imageScale)
 
     bookLines = ["Hmm, a books detailing water", "quality. Doesn't seem", "important... The man was", "stabbed could this be", "evidence? I'm going to keep", "walking around to look", "for evidence"]
-    book = pointOfInterest(screen, 150, 300, pointOfInterestImage, "book", bookLines)
+    book = PointOfInterest(screen, 150, 300, pointOfInterestImage, "book", bookLines)
 
     boardLines = ["it seems they were", "doing their own kind", "of detective work", "what could this be about?", "bla bla bla bla", "bla bla bla bla"]
-    board = pointOfInterest(screen, 620, 170, pointOfInterestImage, "board", boardLines)
+    board = PointOfInterest(screen, 620, 170, pointOfInterestImage, "board", boardLines)
 
     calenderLines = ["They had a day marked off on", "on their calender", "three days ago just a", "day before he was killed"]
-    calender = pointOfInterest(screen, 1200, 130, pointOfInterestImage, "calender", calenderLines)
+    calender = PointOfInterest(screen, 1200, 130, pointOfInterestImage, "calender", calenderLines)
 
     pointsOfInterest = [book, board, calender]
 
@@ -142,6 +142,5 @@ def loadAndScaleImage(originalImagePath, scale):
     scaledImage = pygame.transform.scale(originalImage, (newWidth, newHeight))
 
     return scaledImage
-
 
 game()
